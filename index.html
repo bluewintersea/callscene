@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#ededed" />
+  <meta name="description" content="iPhone 수신 화면 감성의 이미지를 만드는 무료 브라우저 편집기" />
+  <meta property="og:title" content="CALLSCENE" />
+  <meta property="og:description" content="사진과 문구를 넣고 나만의 iPhone 수신 화면을 만들어 보세요." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:title" content="CALLSCENE" />
+  <meta name="twitter:description" content="사진과 문구를 넣고 나만의 iPhone 수신 화면을 만들어 보세요." />
+  <title>CALLSCENE</title>
+  <link rel="stylesheet" href="./styles.css?v=2" />
+</head>
+<body>
+  <main class="editor-shell" id="top">
+    <section class="control-panel" aria-label="이미지 설정">
+      <section class="panel-card" aria-labelledby="background-title">
+        <div class="section-heading">
+          <span>01</span>
+          <div><h2 id="background-title">배경 이미지</h2></div>
+        </div>
+        <div class="indented controls-stack">
+          <label class="upload-field" for="backgroundInput">
+            <input id="backgroundInput" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" />
+            <span class="upload-plus" aria-hidden="true">＋</span>
+            <span><strong>이미지 선택</strong><small id="fileName">JPG, PNG, WEBP</small></span>
+          </label>
+          <button class="secondary-button" id="recropButton" type="button" disabled>크롭 다시 조정</button>
+          <label class="range-field" for="dimRange">
+            <span>배경 어둡기 <output id="dimOutput">28%</output></span>
+            <input id="dimRange" type="range" min="0" max="72" value="28" />
+          </label>
+          <label class="range-field" for="blurRange">
+            <span>배경 흐림 <output id="blurOutput">0</output></span>
+            <input id="blurRange" type="range" min="0" max="24" value="0" />
+          </label>
+        </div>
+      </section>
+
+      <section class="panel-card" aria-labelledby="copy-title">
+        <div class="section-heading">
+          <span>02</span>
+          <div><h2 id="copy-title">문구</h2></div>
+        </div>
+        <div class="indented">
+          <div class="field-grid">
+            <label class="text-field" for="callerName"><span id="nameLabel">이름</span><input id="callerName" type="text" value="Name" maxlength="40" /></label>
+            <label class="text-field" for="statusTime"><span>상단 시간</span><input id="statusTime" type="text" value="12:35" maxlength="5" inputmode="numeric" /></label>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel-card" aria-labelledby="style-title">
+        <div class="section-heading">
+          <span>03</span>
+          <div><h2 id="style-title">화면 스타일</h2></div>
+        </div>
+        <div class="indented controls-stack">
+          <fieldset class="option-field">
+            <legend>언어</legend>
+            <div class="segmented" role="group" aria-label="언어">
+              <button type="button" class="segment" data-lang="ko">한글</button>
+              <button type="button" class="segment active" data-lang="en">English</button>
+            </div>
+          </fieldset>
+          <fieldset class="option-field">
+            <legend>응답 방식</legend>
+            <div class="segmented" role="group" aria-label="응답 방식">
+              <button type="button" class="segment" data-mode="slide">슬라이드형</button>
+              <button type="button" class="segment active" data-mode="touch">터치형</button>
+            </div>
+          </fieldset>
+          <label class="switch-row" for="statusToggle">
+            <span><strong>iOS 상태바</strong></span>
+            <input id="statusToggle" type="checkbox" checked />
+            <i aria-hidden="true"></i>
+          </label>
+          <label class="range-field battery-field" for="batteryRange">
+            <span>배터리 <output id="batteryOutput">82%</output></span>
+            <input id="batteryRange" type="range" min="1" max="100" value="82" />
+          </label>
+        </div>
+      </section>
+
+      <section class="save-actions" aria-label="이미지 저장">
+        <div class="save-button-group">
+          <button class="save-button" id="saveButton" type="button">통화화면 저장</button>
+          <button class="save-button" id="fullSaveButton" type="button">전체 저장</button>
+        </div>
+      </section>
+    </section>
+
+    <section class="preview-stage" aria-labelledby="preview-title">
+      <div class="preview-head">
+        <h2 id="preview-title">미리보기</h2>
+      </div>
+      <div class="phone-shell">
+        <canvas id="previewCanvas" width="1080" height="2340" aria-label="편집 결과 미리보기"></canvas>
+      </div>
+    </section>
+  </main>
+
+  <dialog class="crop-dialog" id="cropDialog" aria-labelledby="cropTitle">
+    <form method="dialog" class="crop-card">
+      <div class="crop-header">
+        <h2 id="cropTitle">배경 크롭</h2>
+        <button class="icon-button" id="cropClose" value="cancel" type="submit" aria-label="크롭 닫기">×</button>
+      </div>
+      <div class="crop-workspace">
+        <div class="crop-canvas-shell"><canvas id="cropCanvas" width="720" height="1560" aria-label="배경 이미지 크롭 영역"></canvas></div>
+      </div>
+      <div class="crop-actions">
+        <button class="secondary-button" id="cropReset" type="button">초기화</button>
+        <button class="apply-button" id="cropApply" type="button">이대로 적용</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="./app.js?v=2"></script>
+</body>
+</html>
